@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+	<form method="POST" class="container-lg mb-5 p-lg-5 shadow">
+		<h5 class="text-muted mb-5">Todo Update Form</h5>
+		{% csrf_token %}
+		<div>
+			{{form|crispy}}
+		</div>
+		<div>
+			<a href="{% url 'index' %}" class="btn btn-outline-secondary btn-sm mr-3">Back</a>
+			<button type="submit" class="btn btn-outline-primary btn-sm">Update</button>
+		</div>
+	</form>
+{% endblock %}

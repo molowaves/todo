@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container-lg">	
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">New Todo</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+
+		        <form method="POST">
+					{% csrf_token %}
+					<div>
+						{{form|crispy}}
+					</div>
+			
+
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-outline-secondary btn-sm" data-dismiss="modal">Close</button>
+		        <button type="submit" class="btn btn-outline-success btn-sm">Save</button>
+		      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+
+
+	<div class="d-flex justify-content-end mb-1">
+		<div class="d-flex">
+			<form method="GET" class="mr-3">
+				<div class="input-group">
+				  <input type="text" class="form-control form-control-sm" placeholder="Filter Todos..." aria-label="Recipient's username" aria-describedby="button-addon2" name="todos">
+				  <div class="input-group-append">
+				    <button class="btn btn-outline-secondary btn-sm" type="submit" id="button-addon2"><i class="bi-search"></i></button>
+				  </div>
+				</div>
+			</form>
+
+			<div class="d-flex mr-3">
+				<small>Filter by Event Date:</small>
+				<input type="date" name="date" id="evd" class="form-control form-control-sm">
+			</div>
+
+			<div>	
+				<a href="#" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#exampleModal">
+				  	<small>+ Add</small>
+				</a>
+			</div>
+
+		</div>
+	</div>
+
+	<table class="table table-sm table-striped table-responsive-sm table-responsive-md shadow">
+		<thead>
+			<th><small><b>SN</b></small></th>
+			<th><small><b>Time Added</b></small></th>
+			<th><small><b>Todo</b></small></th>
+			<th><small><b>Event Date</b></small></th>
+			<th><small><b>Event Time</b></small></th>
+			<th><small><b>Completed</b></small></th>
+			<th></th>
+			<th></th>
+			<th></th>
+		</thead>
+		<tbody>
+			{% for todo in page_obj %}
+				<tr>
+					<td><small>{{forloop.counter}}.</small></td>
+					<td><small>{{todo.time_stamp}}</small></td>
+					<td><small>{{todo.note|truncatechars:50}}</small></td>
+					<td><small>{% if todo.event_date %}{{todo.event_date}}{% else %} NIL {% endif %}</small></td>
+					<td><small>{% if todo.event_time %}{{todo.event_time}}{% else %} NIL {% endif %}</small></td>
+					<td><small>{{todo.completed}}</small></td>
+					<td><a href="{% url 'todo_details' todo.id %}"><small>Details</small></a></td>
+					<td><a href="{% url 'todo_update' todo.id %}"><small class="bi-scissors"></small></a></td>
+					<td><a href="{% url  'todo_delete' todo.id %}"><small class="bi-trash" style="color:rgb(100, 5, 5);"></small></a></td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% include 'page_nav.html' %}
+</div>
+{% endblock %}
+
+{% block javascript %}
+	<script type="text/javascript">
+		const evd = document.getElementById('evd')
+
+		evd.onchange=(e)=>{
+			e.preventDefault()
+			window.location.replace("{% url 'index' %}?evd=" + e.target.value)	
+		}
+	</script>
+{% endblock %}

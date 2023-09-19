@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-lg">
+	<h3 class="text-muted mb-3 shadow p-3">Todo Detail</h3>
+	<div class="shadow p-3 mb-3">
+		<table class="table table-sm table-borderless" style="max-width:250px;">
+			<tbody>
+				<tr>
+					<td><small><b>Date Posted</b></small></td>
+					<td><small>{{todo.time_stamp}}</small></td>
+				</tr>
+				<tr>
+					<td><small><b>Event Date</b></small></td>
+					<td><small>{{todo.event_date}}</small></td>
+				</tr>
+				<tr>
+					<td><small><b>Event Time</b></small></td>
+					<td><small>{{todo.event_time}}</small></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<h5 class="text-muted">Todo</h5>
+	<p class="shadow p-3">{{todo.note}}</p>
+	<hr>
+	<a href="{% url 'index' %}" class="btn btn-outline-secondary btn-sm">Back</a>
+</div>
+{% endblock %}
